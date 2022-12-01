@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <Navigation class="navigation" />
-    <router-view />
+    <Navigation />
+    <router-view :cities="citiesWeather" />
   </div>
 </template>
 
@@ -15,7 +15,8 @@ export default {
   data() {
     return {
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
-      city: "Sofia",
+      cities: ["Sofia", "Varna", "Bourgas"],
+      citiesWeather: [],
     };
   },
   created() {
@@ -24,15 +25,17 @@ export default {
 
   methods: {
     getCurrentWeather() {
-      axios
-        .get(
-          `https://api.openweathermap.org/data/2.5/weather?q=${
-            this.city
-          },${"BG"}&units=metric&appid=${this.APIKey}`
-        )
-        .then((responce) => {
-          console.log(responce);
-        });
+      this.cities.forEach((city) => {
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city},${"BG"}&lang=bg&units=metric&appid=${
+              this.APIKey
+            }`
+          )
+          .then((responce) => {
+            this.citiesWeather.push(responce.data);
+          });
+      });
     },
   },
 };
@@ -47,14 +50,12 @@ export default {
 }
 
 .main {
+  max-width: 1024px;
+  margin: 0 auto;
   height: 100vh;
-  .navigation {
-    z-index: 99;
-    position: fixed;
-    max-width: 1024px;
-    width: 100%;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  .container {
+    padding: 0 20px;
   }
 }
 </style>
