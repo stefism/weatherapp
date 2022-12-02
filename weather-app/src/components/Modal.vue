@@ -2,28 +2,85 @@
 <template>
   <div @click="closeModal" class="modal" ref="modal">
     <div class="modal-wrap" ref="modalWrap">
-      <label for="city-name">Въведете град:</label>
+      <!-- <v-autocomplete
+        style="background-color: white"
+        :items="countries"
+        item-text="name"
+      >
+      </v-autocomplete> -->
+      <label for="country-name">Изберете държава:</label>
       <input
+        list="countries"
+        type="text"
+        name="country-name"
+        placeholder="Търсете по име на държава"
+        v-model="currentCountryName"
+      />
+      <datalist id="countries">
+        <option
+          v-for="(country, index) in countries"
+          :key="index"
+          :value="country.name"
+        ></option>
+      </datalist>
+      <label for="city-name">Изберете град:</label>
+      <input
+        list="current-cities"
         type="text"
         name="city-name"
         placeholder="Търсете по име на град"
-        v-model="city"
+        v-model="currentCity"
       />
-      <button>Добави</button>
+      <datalist id="current-cities">
+        <option
+          v-for="(city, index) in currentCities"
+          :key="index"
+          :value="city.name"
+        ></option>
+      </datalist>
+
+      <v-btn @click="clearSelection">Изчисти</v-btn>
+      <v-btn @click="addNewCityToWeather">Добави</v-btn>
     </div>
   </div>
 </template>
 
 <script>
+import counrtyCodes from "../assets/countryCodes.json";
+import cities from "../assets/cities.json";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "modal",
   data() {
     return {
-      city: null,
+      countries: counrtyCodes,
+      currentCountryName: null,
+      currentCity: null,
     };
   },
+  mounted() {},
+  computed: {
+    currentCities() {
+      const countryObject = this.countries.find(
+        (c) => c.name == this.currentCountryName
+      );
+      return (
+        countryObject && cities.filter((c) => c.country == countryObject.code)
+      );
+    },
+  },
   methods: {
+    clearSelection() {
+      this.currentCountryName = null;
+      this.currentCity = null;
+    },
+    addNewCityToWeather() {
+      const countryObject = this.countries.find(
+        (c) => c.name == this.currentCountryName
+      );
+      this.$emit("addNewCityToWeather", countryObject.code, this.currentCity);
+    },
     closeModal(e) {
       if (e.target == this.$refs.modal) {
         this.$emit("close-modal");

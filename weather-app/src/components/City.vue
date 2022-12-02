@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="city">
-    <span>{{ city.name }}</span>
+    <span>{{ city.name }} - {{ city.sys.country }}</span>
     <span>{{ city.main.temp }} &deg;C</span>
     <div class="weather">
       <img

@@ -1,6 +1,10 @@
 <template>
   <div class="main">
-    <Modal v-if="modalOpen" @close-modal="toggleModal" />
+    <Modal
+      v-if="modalOpen"
+      @close-modal="toggleModal"
+      @addNewCityToWeather="addNewCityToWeather"
+    />
     <Navigation @add-city="toggleModal" />
     <router-view :cities="citiesWeather" />
   </div>
@@ -18,8 +22,13 @@ export default {
     return {
       modalOpen: null,
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
-      cities: ["Sofia", "Varna", "Bourgas"],
+      cities: [
+        { city: "Sofia", country: "BG" },
+        { city: "Varna", country: "BG" },
+        { city: "Bourgas", country: "BG" },
+      ],
       citiesWeather: [],
+      selectedCountry: null,
     };
   },
   created() {
@@ -27,16 +36,20 @@ export default {
   },
 
   methods: {
+    addNewCityToWeather(countryCode, cityName) {
+      this.cities.push({ city: cityName, country: countryCode });
+      this.getCurrentWeather();
+      this.modalOpen = false;
+    },
     toggleModal() {
       this.modalOpen = !this.modalOpen;
     },
     getCurrentWeather() {
+      this.citiesWeather = [];
       this.cities.forEach((city) => {
         axios
           .get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city},${"BG"}&lang=bg&units=metric&appid=${
-              this.APIKey
-            }`
+            `https://api.openweathermap.org/data/2.5/weather?q=${city.city},${city.country}&lang=bg&units=metric&appid=${this.APIKey}`
           )
           .then((responce) => {
             this.citiesWeather.push(responce.data);
