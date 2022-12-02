@@ -6,14 +6,18 @@
       <div class="right">
         <i class="far fa-edit"></i>
         <i class="fas fa-sync"></i>
-        <i class="fas fa-plus"></i>
+        <i @click="$emit('add-city')" class="fas fa-plus"></i>
       </div>
     </nav>
   </header>
 </template>
 
 <script>
-export default {};
+export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "navigation",
+  methods: {},
+};
 </script>
 
 <style lang="scss" scoped>

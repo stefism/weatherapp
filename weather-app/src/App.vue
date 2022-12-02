@@ -1,6 +1,7 @@
 <template>
   <div class="main">
-    <Navigation />
+    <Modal v-if="modalOpen" @close-modal="toggleModal" />
+    <Navigation @add-city="toggleModal" />
     <router-view :cities="citiesWeather" />
   </div>
 </template>
@@ -8,12 +9,14 @@
 <script>
 import axios from "axios";
 import Navigation from "@/components/Navigation.vue";
+import Modal from "@/components/Modal.vue";
 
 export default {
   name: "App",
-  components: { Navigation },
+  components: { Navigation, Modal },
   data() {
     return {
+      modalOpen: null,
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
       cities: ["Sofia", "Varna", "Bourgas"],
       citiesWeather: [],
@@ -24,6 +27,9 @@ export default {
   },
 
   methods: {
+    toggleModal() {
+      this.modalOpen = !this.modalOpen;
+    },
     getCurrentWeather() {
       this.cities.forEach((city) => {
         axios
