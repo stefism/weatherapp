@@ -5,8 +5,8 @@
       @close-modal="toggleModal"
       @addNewCityToWeather="addNewCityToWeather"
     />
-    <Navigation @add-city="toggleModal" />
-    <router-view :cities="citiesWeather" />
+    <Navigation @add-city="toggleModal" @edit-city="toggleEditMode" />
+    <router-view :cities="citiesWeather" :isInEditMode="isInEditMode" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
   components: { Navigation, Modal },
   data() {
     return {
+      isInEditMode: null,
       modalOpen: null,
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
       cities: [
@@ -43,6 +44,9 @@ export default {
     },
     toggleModal() {
       this.modalOpen = !this.modalOpen;
+    },
+    toggleEditMode() {
+      this.isInEditMode = !this.isInEditMode;
     },
     getCurrentWeather() {
       this.citiesWeather = [];

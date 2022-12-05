@@ -4,8 +4,8 @@
     <nav>
       <span>Add City</span>
       <div class="right">
-        <i class="far fa-edit"></i>
-        <i class="fas fa-sync"></i>
+        <i @click="$emit('edit-city')" class="far fa-edit"></i>
+        <i @click="reloadApp" class="fas fa-sync"></i>
         <i @click="$emit('add-city')" class="fas fa-plus"></i>
       </div>
     </nav>
@@ -16,7 +16,11 @@
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "navigation",
-  methods: {},
+  methods: {
+    reloadApp() {
+      location.reload();
+    },
+  },
 };
 </script>
 
