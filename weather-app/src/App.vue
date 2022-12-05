@@ -5,8 +5,16 @@
       @close-modal="toggleModal"
       @addNewCityToWeather="addNewCityToWeather"
     />
-    <Navigation @add-city="toggleModal" @edit-city="toggleEditMode" />
-    <router-view :cities="citiesWeather" :isInEditMode="isInEditMode" />
+    <Navigation
+      :addCityActive="addCityActive"
+      @add-city="toggleModal"
+      @edit-city="toggleEditMode"
+    />
+    <router-view
+      :cities="citiesWeather"
+      :isInEditMode="isInEditMode"
+      @remove-city="removeCity"
+    />
   </div>
 </template>
 
@@ -22,11 +30,12 @@ export default {
     return {
       isInEditMode: null,
       modalOpen: null,
+      addCityActive: null,
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
       cities: [
-        { city: "Sofia", country: "BG" },
-        { city: "Varna", country: "BG" },
-        { city: "Bourgas", country: "BG" },
+        { city: "Sofia", country: "BG", id: "1" },
+        { city: "Varna", country: "BG", id: "2" },
+        { city: "Bourgas", country: "BG", id: "3" },
       ],
       citiesWeather: [],
       selectedCountry: null,
@@ -35,12 +44,29 @@ export default {
   created() {
     this.getCurrentWeather();
   },
-
+  watch: {
+    $route() {
+      this.checkRoute();
+    },
+  },
   methods: {
     addNewCityToWeather(countryCode, cityName) {
-      this.cities.push({ city: cityName, country: countryCode });
+      const random = Math.random().toString(16).slice(2);
+      this.cities.push({ city: cityName, country: countryCode, id: random });
       this.getCurrentWeather();
       this.modalOpen = false;
+    },
+    removeCity(cityId) {
+      this.cities = this.cities.filter((c) => c.id != cityId);
+      this.isInEditMode = false;
+      this.getCurrentWeather();
+    },
+    checkRoute() {
+      if (this.$route.name == "AddCity") {
+        this.addCityActive = true;
+      } else {
+        this.addCityActive = false;
+      }
     },
     toggleModal() {
       this.modalOpen = !this.modalOpen;
@@ -56,9 +82,12 @@ export default {
             `https://api.openweathermap.org/data/2.5/weather?q=${city.city},${city.country}&lang=bg&units=metric&appid=${this.APIKey}`
           )
           .then((responce) => {
+            responce.data.programId = city.id;
             this.citiesWeather.push(responce.data);
           });
       });
+
+      console.log(this.citiesWeather);
     },
   },
 };

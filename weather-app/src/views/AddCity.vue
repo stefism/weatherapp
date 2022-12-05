@@ -1,7 +1,11 @@
 <template>
   <div class="grid">
     <div class="city-link" v-for="(city, index) in cities" :key="index">
-      <City :city="city" :isInEditMode="isInEditMode" />
+      <City
+        :city="city"
+        :isInEditMode="isInEditMode"
+        @remove-city="removeCity"
+      />
     </div>
   </div>
 </template>
@@ -13,8 +17,11 @@ export default {
   name: "AddCity",
   components: { City },
   props: ["cities", "isInEditMode"],
-  created() {
-    console.log(this.cities);
+  created() {},
+  methods: {
+    removeCity(cityId) {
+      this.$emit("remove-city", cityId);
+    },
   },
 };
 </script>

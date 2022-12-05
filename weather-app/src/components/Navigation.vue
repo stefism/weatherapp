@@ -1,21 +1,37 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <header class="container add-city">
-    <nav>
-      <span>Add City</span>
-      <div class="right">
-        <i @click="$emit('edit-city')" class="far fa-edit"></i>
-        <i @click="reloadApp" class="fas fa-sync"></i>
-        <i @click="$emit('add-city')" class="fas fa-plus"></i>
-      </div>
-    </nav>
-  </header>
+  <div>
+    <header v-if="addCityActive" class="container add-city">
+      <nav>
+        <span>Add City</span>
+        <div class="right">
+          <i @click="$emit('edit-city')" class="far fa-edit"></i>
+          <i @click="reloadApp" class="fas fa-sync"></i>
+          <i @click="$emit('add-city')" class="fas fa-plus"></i>
+        </div>
+      </nav>
+    </header>
+    <header v-else class="container">
+      <nav>
+        <router-link class="router-link" :to="{ name: 'AddCity' }">
+          <i class="fas fa-plus"></i>
+        </router-link>
+        <span
+          >{{ new Date().toLocaleString("bg-bg", { weekday: "long" }) }}
+          {{ new Date().toLocaleString("bg-bg", { month: "short" }) }}
+          {{ new Date().toLocaleString("bg-bg", { day: "2-digit" }) }}</span
+        >
+        <span>&deg; C</span>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <script>
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "navigation",
+  props: ["addCityActive"],
   methods: {
     reloadApp() {
       location.reload();
@@ -43,9 +59,18 @@ header {
     justify-content: space-between;
   }
 
+  .router-link {
+    color: #fff;
+  }
+
   .right {
     i {
       font-size: 20px;
+    }
+
+    i:hover {
+      cursor: pointer;
+      color: red;
     }
 
     i:nth-child(2),

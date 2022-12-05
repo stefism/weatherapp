@@ -1,7 +1,12 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="city">
-    <i v-if="isInEditMode" class="far fa-trash-alt edit" ref="edit"></i>
+  <div @click="goToWeather" class="city">
+    <i
+      v-if="isInEditMode"
+      @click="removeCity(city.programId)"
+      class="far fa-trash-alt edit"
+      ref="edit"
+    ></i>
     <span>{{ city.name }} - {{ city.sys.country }}</span>
     <span>{{ city.main.temp }} &deg;C</span>
     <div class="weather">
@@ -31,6 +36,20 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "city",
   props: ["city", "isInEditMode"],
+  methods: {
+    removeCity(cityId) {
+      this.$emit("remove-city", cityId);
+    },
+    goToWeather(e) {
+      console.log("this.city", this.city);
+      if (e.target != this.$refs.edit) {
+        this.$router.push({
+          name: "Weather",
+          params: { city: this.city.name },
+        });
+      }
+    },
+  },
 };
 </script>
 
