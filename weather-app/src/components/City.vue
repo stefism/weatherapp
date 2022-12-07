@@ -41,7 +41,6 @@ export default {
       this.$emit("remove-city", cityId);
     },
     goToWeather(e) {
-      console.log("this.city", this.city);
       if (e.target != this.$refs.edit) {
         this.$router.push({
           name: "Weather",
@@ -54,6 +53,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.text {
+   box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
 .city {
   display: flex;
   position: relative;
@@ -81,6 +84,7 @@ export default {
     display: block;
     font-size: 25px;
     font-weight: 600;
+    text-shadow: 3px 3px #040404;
   }
 
   .weather {
@@ -90,6 +94,7 @@ export default {
     align-items: flex-end;
     flex: 1;
     flex-direction: column;
+    text-shadow: 2px 2px 3px #040404, 2px 2px 3px #040404;
 
     span {
       font-size: 35px;

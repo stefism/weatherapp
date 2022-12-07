@@ -11,7 +11,7 @@
         </div>
       </nav>
     </header>
-    <header v-else class="container">
+    <header v-else class="container" :class="{ day: isDay, night: !isDay }">
       <nav>
         <router-link class="router-link" :to="{ name: 'AddCity' }">
           <i class="fas fa-plus"></i>
@@ -31,7 +31,7 @@
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "navigation",
-  props: ["addCityActive"],
+  props: ["addCityActive", "isDay"],
   methods: {
     reloadApp() {
       location.reload();
@@ -43,6 +43,16 @@ export default {
 <style lang="scss" scoped>
 .add-city {
   background-color: #313640;
+}
+
+.day {
+  transition: 500ms ease all;
+  background-color: rgb(59, 150, 249);
+}
+
+.night {
+  transition: 500ms ease all;
+  background-color: rgb(20, 42, 95);
 }
 
 header {

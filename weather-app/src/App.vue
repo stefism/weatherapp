@@ -7,6 +7,7 @@
     />
     <Navigation
       :addCityActive="addCityActive"
+      :isDay="isDay"
       @add-city="toggleModal"
       @edit-city="toggleEditMode"
     />
@@ -14,6 +15,7 @@
       :cities="citiesWeather"
       :isInEditMode="isInEditMode"
       @remove-city="removeCity"
+      @is-day="checkIsDayOrNight"
     />
   </div>
 </template>
@@ -28,9 +30,10 @@ export default {
   components: { Navigation, Modal },
   data() {
     return {
+      isDay: null,
       isInEditMode: null,
       modalOpen: null,
-      addCityActive: null,
+      addCityActive: true,
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
       cities: [
         { city: "Sofia", country: "BG", id: "1" },
@@ -50,6 +53,9 @@ export default {
     },
   },
   methods: {
+    checkIsDayOrNight(isDay) {
+      this.isDay = isDay;
+    },
     addNewCityToWeather(countryCode, cityName) {
       const random = Math.random().toString(16).slice(2);
       this.cities.push({ city: cityName, country: countryCode, id: random });

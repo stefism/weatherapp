@@ -26,9 +26,32 @@ export default {
   },
   created() {
     // console.log("this.cities - weather", this.cities);
-    this.getWeather();
+    // this.getWeather();
+    this.getCurrentTime();
   },
   methods: {
+    getCurrentTime() {
+      const dateObject = new Date();
+      const currentTime = dateObject.getHours();
+
+      const currentCity = this.cities.find(
+        (c) => c.name == this.$route.params.city
+      );
+
+      if(currentCity == undefined) {
+        this.$router.push("/");
+        return;
+      }
+
+      const sunrise = new Date(currentCity.sys.sunrise * 1000).getHours();
+      const sunset = new Date(currentCity.sys.sunset * 1000).getHours();
+
+      if(currentTime > sunrise && currentTime < sunset) {
+        this.$emit("is-day", true);
+      } else {
+        this.$emit("is-day", false);
+      }
+    },
     getWeather() {
       const currentCity = this.cities.find(
         (c) => c.name == this.$route.params.city
