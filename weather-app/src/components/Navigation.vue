@@ -45,16 +45,6 @@ export default {
   background-color: #313640;
 }
 
-.day {
-  transition: 500ms ease all;
-  background-color: rgb(59, 150, 249);
-}
-
-.night {
-  transition: 500ms ease all;
-  background-color: rgb(20, 42, 95);
-}
-
 header {
   z-index: 99;
   position: fixed;

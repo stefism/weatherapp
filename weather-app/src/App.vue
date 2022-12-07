@@ -12,6 +12,7 @@
       @edit-city="toggleEditMode"
     />
     <router-view
+      :isDay="isDay"
       :cities="citiesWeather"
       :isInEditMode="isInEditMode"
       @remove-city="removeCity"
@@ -105,6 +106,16 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Quicksand", sans-serif;
+}
+
+.day {
+  transition: 500ms ease all;
+  background-color: rgb(59, 150, 249);
+}
+
+.night {
+  transition: 500ms ease all;
+  background-color: rgb(20, 42, 95);
 }
 
 .main {

@@ -1,24 +1,29 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div>
-    <h4>Weather</h4>
-    <h4>Weather</h4>
-    <h4>Weather</h4>
-    <h4>Weather</h4>
-    <h4>Weather</h4>
+  <div class="main">
+    <div v-if="loading" class="loading">
+      <span></span>
+    </div>
+    <div v-else class="weather" :class="{ day: isDay, night: !isDay }">
+      <div class="weather-wrap">
+        <CurrentWeather :isDay="isDay" :currentWeather="currentWeather" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import CurrentWeather from "@/components/CurrentWeather.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Weather",
-  props: ["cities"],
+  props: ["cities", "isDay"],
+  components: { CurrentWeather },
   data() {
     return {
-      APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
+      APIKey: process.env.VUE_APP_API_EXPLORER_API_KEY,
       forecast: null,
       currentWeather: null,
       loading: true,
@@ -26,8 +31,8 @@ export default {
   },
   created() {
     // console.log("this.cities - weather", this.cities);
-    // this.getWeather();
     this.getCurrentTime();
+    this.getWeather();
   },
   methods: {
     getCurrentTime() {
@@ -38,10 +43,14 @@ export default {
         (c) => c.name == this.$route.params.city
       );
 
+      console.log("currentCity", currentCity);
+
       if(currentCity == undefined) {
         this.$router.push("/");
         return;
       }
+
+      this.currentWeather = currentCity;
 
       const sunrise = new Date(currentCity.sys.sunrise * 1000).getHours();
       const sunset = new Date(currentCity.sys.sunset * 1000).getHours();
@@ -56,12 +65,16 @@ export default {
       const currentCity = this.cities.find(
         (c) => c.name == this.$route.params.city
       );
-      console.log("currentCity", currentCity);
+
+      if(currentCity == undefined) {
+        return;
+      }
+      
       axios
         .get(
-          `https://api.openweathermap.org/data/3.0/onecall?lat=${currentCity.coord.lat}&lon=${currentCity.coord.lon}&exclude={part}&appid=${this.APIKey}`
+          `http://api.weatherapi.com/v1/forecast.json?key=${this.APIKey}&q=${currentCity.name}&days=3&lang=bg&aqi=yes&alerts=yes`
         )
-        .then((responce) => {
+        .then((responce) => { 
           this.forecast = responce.data;
         })
         .then(() => {
@@ -73,4 +86,39 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.loading {
+  @keyframes spin {
+    to {
+      transform: rotateZ(360deg);
+    }
+  }
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  span {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    border: 2px solid transparent;
+    border-top-color: #142a5f;
+    border-radius: 50%;
+    animation: spin ease 1000ms infinite;
+  }
+}
+.weather {
+  transition: 500ms ease;
+  overflow: scroll;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .weather-wrap {
+    overflow: hidden;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+}
+</style>
