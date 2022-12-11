@@ -7,6 +7,7 @@
     <div v-else class="weather" :class="{ day: isDay, night: !isDay }">
       <div class="weather-wrap">
         <CurrentWeather :isDay="isDay" :currentWeather="currentWeather" />
+        <HourlyWeather :forecast="forecast" />
       </div>
     </div>
   </div>
@@ -15,12 +16,13 @@
 <script>
 import axios from "axios";
 import CurrentWeather from "@/components/CurrentWeather.vue";
+import HourlyWeather from "@/components/HourlyWeather.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Weather",
   props: ["cities", "isDay"],
-  components: { CurrentWeather },
+  components: { CurrentWeather, HourlyWeather },
   data() {
     return {
       APIKey: process.env.VUE_APP_API_EXPLORER_API_KEY,
