@@ -54,11 +54,12 @@ export default {
 
 <style lang="scss" scoped>
 .text {
-   box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
 }
 
 .city {
   display: flex;
+  cursor: pointer;
   position: relative;
   flex-direction: column;
   padding: 20px;

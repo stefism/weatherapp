@@ -17,9 +17,9 @@
           <i class="fas fa-plus"></i>
         </router-link>
         <span
-          >{{ new Date().toLocaleString("bg-bg", { weekday: "long" }) }}
-          {{ new Date().toLocaleString("bg-bg", { month: "short" }) }}
-          {{ new Date().toLocaleString("bg-bg", { day: "2-digit" }) }}</span
+          >{{ new Date().toLocaleString("bg-bg", { weekday: "long" }) }} -
+          {{ new Date().toLocaleString("bg-bg", { day: "2-digit" }) }}
+          {{ new Date().toLocaleString("bg-bg", { month: "long" }) }}</span
         >
         <span>&deg; C</span>
       </nav>
