@@ -5,6 +5,7 @@
         class="daily-forecast"
         v-for="(day, index) in dailyForecast"
         :key="index"
+        @click="getSelectedDay(day.date_epoch)"
       >
         <div>
           <span class="week-day">
@@ -54,6 +55,11 @@ export default {
   created() {
     console.log("this.dailyForecast", this.dailyForecast);
   },
+  methods: {
+    getSelectedDay(date) {
+      this.$emit("get-selected-day", date);
+    },
+  },
 };
 </script>
 
@@ -63,6 +69,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   color: #fff;
+  cursor: pointer;
 
   .week-day {
     text-transform: capitalize;
@@ -94,5 +101,9 @@ export default {
       font-weight: 500;
     }
   }
+}
+
+.daily-forecast:hover {
+  background-color: rgb(153, 210, 248);
 }
 </style>

@@ -8,7 +8,16 @@
       <div class="weather-wrap">
         <CurrentWeather :isDay="isDay" :currentWeather="currentWeather" />
         <HourlyWeather :forecast="forecast" />
-        <DailyForecast :forecast="forecast" />
+        <DailyForecast
+          v-if="!detailsForecast"
+          :forecast="forecast"
+          @get-selected-day="getSelectedDay"
+        />
+        <DetailsDailyForecast
+          v-else
+          :selectedDayForecast="selectedDayForecast"
+          @returnToDailyForecast="returnToDailyForecast"
+        />
       </div>
     </div>
   </div>
@@ -19,16 +28,24 @@ import axios from "axios";
 import CurrentWeather from "@/components/CurrentWeather.vue";
 import HourlyWeather from "@/components/HourlyWeather.vue";
 import DailyForecast from "@/components/DailyForecast.vue";
+import DetailsDailyForecast from "@/components/DetailsDailyForecast.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Weather",
   props: ["cities", "isDay"],
-  components: { CurrentWeather, HourlyWeather, DailyForecast },
+  components: {
+    CurrentWeather,
+    HourlyWeather,
+    DailyForecast,
+    DetailsDailyForecast,
+  },
   data() {
     return {
       APIKey: process.env.VUE_APP_API_EXPLORER_API_KEY,
+      detailsForecast: false,
       forecast: null,
+      selectedDayForecast: null,
       currentWeather: null,
       loading: true,
     };
@@ -39,6 +56,15 @@ export default {
     this.getWeather();
   },
   methods: {
+    returnToDailyForecast() {
+      this.detailsForecast = false;
+    },
+    getSelectedDay(date) {
+      this.selectedDayForecast = this.forecast.forecast.forecastday.find(
+        (f) => f.date_epoch == date
+      );
+      this.detailsForecast = true;
+    },
     getCurrentTime() {
       const dateObject = new Date();
       const currentTime = dateObject.getHours();
@@ -46,8 +72,6 @@ export default {
       const currentCity = this.cities.find(
         (c) => c.name == this.$route.params.city
       );
-
-      console.log("currentCity", currentCity);
 
       if (currentCity == undefined) {
         this.$router.push("/");
