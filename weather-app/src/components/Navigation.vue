@@ -3,7 +3,7 @@
   <div>
     <header v-if="addCityActive" class="container add-city">
       <nav>
-        <span>Add City</span>
+        <span>Моите градове</span>
         <div class="right">
           <i @click="$emit('edit-city')" class="far fa-edit"></i>
           <i @click="reloadApp" class="fas fa-sync"></i>
@@ -14,7 +14,9 @@
     <header v-else class="container" :class="{ day: isDay, night: !isDay }">
       <nav>
         <router-link class="router-link" :to="{ name: 'AddCity' }">
-          <i class="fas fa-plus"></i>
+          <v-icon style="color: white; font-size: 35px"
+            >mdi-arrow-left-circle</v-icon
+          >
         </router-link>
         <span
           >{{ new Date().toLocaleString("bg-bg", { weekday: "long" }) }} -
@@ -55,12 +57,13 @@ header {
   nav {
     display: flex;
     color: #fff;
-    padding: 30px 0;
+    padding: 20px 0;
     justify-content: space-between;
   }
 
   .router-link {
     color: #fff;
+    text-decoration: none;
   }
 
   .right {

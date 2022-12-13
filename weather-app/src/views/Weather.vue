@@ -8,16 +8,18 @@
       <div class="weather-wrap">
         <CurrentWeather :isDay="isDay" :currentWeather="currentWeather" />
         <HourlyWeather :forecast="forecast" />
-        <DailyForecast
-          v-if="!detailsForecast"
-          :forecast="forecast"
-          @get-selected-day="getSelectedDay"
-        />
-        <DetailsDailyForecast
-          v-else
-          :selectedDayForecast="selectedDayForecast"
-          @returnToDailyForecast="returnToDailyForecast"
-        />
+        <transition name="bounce">
+          <DailyForecast
+            v-if="!detailsForecast"
+            :forecast="forecast"
+            @get-selected-day="getSelectedDay"
+          />
+          <DetailsDailyForecast
+            v-else
+            :selectedDayForecast="selectedDayForecast"
+            @returnToDailyForecast="returnToDailyForecast"
+          />
+        </transition>
       </div>
     </div>
   </div>
@@ -51,7 +53,6 @@ export default {
     };
   },
   created() {
-    // console.log("this.cities - weather", this.cities);
     this.getCurrentTime();
     this.getWeather();
   },
@@ -107,7 +108,6 @@ export default {
         })
         .then(() => {
           this.loading = false;
-          console.log("this.forecast", this.forecast);
         });
     },
   },
@@ -166,10 +166,29 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
+
   .weather-wrap {
     overflow: hidden;
     max-width: 1024px;
     margin: 0 auto;
+  }
+
+  .bounce-enter-active {
+    animation: bounce-in 0.5s;
+  }
+  .bounce-leave-active {
+    animation: bounce-in 0.5s reverse;
+  }
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 }
 </style>

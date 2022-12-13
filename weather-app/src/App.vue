@@ -5,12 +5,23 @@
       @close-modal="toggleModal"
       @addNewCityToWeather="addNewCityToWeather"
     />
+
     <Navigation
       :addCityActive="addCityActive"
       :isDay="isDay"
       @add-city="toggleModal"
       @edit-city="toggleEditMode"
     />
+
+    <div v-if="!agreeCookies" class="consent">
+      <p>
+        Щеш - нещеш - бисквита ще ядеш. Ползувам бисквита, торта, паста и други
+        за да ти дращя по локал сториджа. Там записвам кои градове ползваш,
+        както и дали си съгласен с това.
+      </p>
+      <v-btn @click="acceptCookies">Ми убуу</v-btn>
+    </div>
+
     <router-view
       :isDay="isDay"
       :cities="citiesWeather"
@@ -36,16 +47,15 @@ export default {
       modalOpen: null,
       addCityActive: true,
       APIKey: process.env.VUE_APP_OPENWEATHER_API_KEY,
-      cities: [
-        { city: "Sofia", country: "BG", id: "1" },
-        { city: "Varna", country: "BG", id: "2" },
-        { city: "Bourgas", country: "BG", id: "3" },
-      ],
+      cities: [],
       citiesWeather: [],
       selectedCountry: null,
+      agreeCookies: false,
     };
   },
   created() {
+    this.verifyCookieConsent();
+    this.manageLocalStorageCities();
     this.getCurrentWeather();
   },
   watch: {
@@ -54,17 +64,60 @@ export default {
     },
   },
   methods: {
+    verifyCookieConsent() {
+      const cookie = window.localStorage.getItem("weatherAppAgreeCookie");
+      if (cookie) {
+        this.agreeCookies = true;
+      }
+    },
+    acceptCookies() {
+      window.localStorage.setItem("weatherAppAgreeCookie", "true");
+      this.agreeCookies = true;
+    },
+    manageLocalStorageCities() {
+      const initialDefaultCities = [
+        { city: "Sofia", country: "BG", id: "1" },
+        { city: "Varna", country: "BG", id: "2" },
+        { city: "Bourgas", country: "BG", id: "3" },
+      ];
+
+      const cities = window.localStorage.getItem("weatherAppCities");
+      const citiesObj = JSON.parse(cities);
+
+      if (citiesObj == null) {
+        window.localStorage.setItem(
+          "weatherAppCities",
+          JSON.stringify(this.initialDefaultCities)
+        );
+
+        this.cities = initialDefaultCities;
+      } else {
+        this.cities = citiesObj;
+      }
+    },
     checkIsDayOrNight(isDay) {
       this.isDay = isDay;
     },
     addNewCityToWeather(countryCode, cityName) {
       const random = Math.random().toString(16).slice(2);
       this.cities.push({ city: cityName, country: countryCode, id: random });
+
+      window.localStorage.setItem(
+        "weatherAppCities",
+        JSON.stringify(this.cities)
+      );
+
       this.getCurrentWeather();
       this.modalOpen = false;
     },
     removeCity(cityId) {
       this.cities = this.cities.filter((c) => c.id != cityId);
+
+      window.localStorage.setItem(
+        "weatherAppCities",
+        JSON.stringify(this.cities)
+      );
+
       this.isInEditMode = false;
       this.getCurrentWeather();
     },
@@ -93,8 +146,6 @@ export default {
             this.citiesWeather.push(responce.data);
           });
       });
-
-      console.log(this.citiesWeather);
     },
   },
 };
@@ -106,6 +157,15 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Quicksand", sans-serif;
+}
+
+.consent {
+  background-color: green;
+  margin-top: 44px;
+  display: flex;
+  z-index: 99;
+  position: absolute;
+  color: white;
 }
 
 .day {

@@ -15,56 +15,55 @@
       <div class="left">
         <p>
           <v-icon>mdi-theme-light-dark</v-icon> осветеност на луната:
-          <b>{{ selectedDayForecast.astro.moon_illumination }}</b
-          >%
+          <b>{{ selectedDayForecast.astro.moon_illumination }}%</b>
         </p>
         <p>
           <v-icon>mdi-moon-waning-crescent</v-icon> лунен изгрев:
-          {{ selectedDayForecast.astro.moonrise }}
+          <b>{{ selectedDayForecast.astro.moonrise }}</b>
         </p>
         <p>
           <v-icon>mdi-moon-waxing-crescent</v-icon> лунен залез:
-          {{ selectedDayForecast.astro.moonset }}
+          <b>{{ selectedDayForecast.astro.moonset }}</b>
         </p>
         <p>
           <v-icon>mdi-weather-dust</v-icon> влажност:
-          {{ selectedDayForecast.day.avghumidity }}%
+          <b>{{ selectedDayForecast.day.avghumidity }}%</b>
         </p>
       </div>
       <div class="center">
         <p>
           <v-icon>mdi-sun-clock-outline</v-icon> изгрев:
-          {{ selectedDayForecast.astro.sunrise }}
+          <b>{{ selectedDayForecast.astro.sunrise }}</b>
         </p>
         <p>
           <v-icon>mdi-sun-clock</v-icon> залез:
-          {{ selectedDayForecast.astro.sunset }}
+          <b>{{ selectedDayForecast.astro.sunset }}</b>
         </p>
         <p>
           <v-icon>mdi-weather-pouring</v-icon> шанс за дъжд:
-          {{ selectedDayForecast.day.daily_chance_of_rain }}%
+          <b>{{ selectedDayForecast.day.daily_chance_of_rain }}%</b>
         </p>
         <p>
           <v-icon>mdi-weather-snowy-heavy</v-icon> шанс за сняг:
-          {{ selectedDayForecast.day.daily_chance_of_snow }}%
+          <b>{{ selectedDayForecast.day.daily_chance_of_snow }}%</b>
         </p>
       </div>
       <div class="right">
         <p>
           <v-icon>mdi-thermometer-lines</v-icon> средна t&deg;:
-          {{ selectedDayForecast.day.avgtemp_c }}&deg;
+          <b>{{ selectedDayForecast.day.avgtemp_c }}&deg;</b>
         </p>
         <p>
           <v-icon>mdi-thermometer-minus</v-icon> минимална t&deg;:
-          {{ selectedDayForecast.day.mintemp_c }}&deg;
+          <b>{{ selectedDayForecast.day.mintemp_c }}&deg;</b>
         </p>
         <p>
           <v-icon>mdi-thermometer-plus</v-icon> максимална t&deg;:
-          {{ selectedDayForecast.day.maxtemp_c }}&deg;
+          <b>{{ selectedDayForecast.day.maxtemp_c }}&deg;</b>
         </p>
         <p>
           <v-icon>mdi-weather-tornado</v-icon> вятър:
-          {{ selectedDayForecast.day.maxwind_kph }} км/ч.;
+          <b>{{ selectedDayForecast.day.maxwind_kph }} км/ч.</b>
         </p>
       </div>
     </div>
