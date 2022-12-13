@@ -101,7 +101,7 @@ export default {
 
       axios
         .get(
-          `http://api.weatherapi.com/v1/forecast.json?key=${this.APIKey}&q=${currentCity.name}&days=7&lang=bg&aqi=yes&alerts=yes`
+          `https://api.weatherapi.com/v1/forecast.json?key=${this.APIKey}&q=${currentCity.name}&days=7&lang=bg&aqi=yes&alerts=yes`
         )
         .then((responce) => {
           this.forecast = responce.data;

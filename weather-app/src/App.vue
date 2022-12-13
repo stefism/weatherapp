@@ -87,7 +87,7 @@ export default {
       if (citiesObj == null) {
         window.localStorage.setItem(
           "weatherAppCities",
-          JSON.stringify(this.initialDefaultCities)
+          JSON.stringify(initialDefaultCities)
         );
 
         this.cities = initialDefaultCities;

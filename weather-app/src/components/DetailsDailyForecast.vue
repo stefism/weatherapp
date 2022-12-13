@@ -73,9 +73,7 @@
 <script>
 export default {
   props: ["selectedDayForecast"],
-  created() {
-    console.log("selectedDayForecast", this.selectedDayForecast);
-  },
+  created() {},
   methods: {
     returnToDailyForecast() {
       this.$emit("returnToDailyForecast");

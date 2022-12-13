@@ -52,9 +52,7 @@ export default {
       dailyForecast: this.forecast.forecast.forecastday.slice(1),
     };
   },
-  created() {
-    console.log("this.dailyForecast", this.dailyForecast);
-  },
+  created() {},
   methods: {
     getSelectedDay(date) {
       this.$emit("get-selected-day", date);
